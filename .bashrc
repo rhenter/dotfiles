@@ -142,10 +142,11 @@ update-data() {
     app=$(echo olist-$1 | sed -e "s/_/-/g");
     dumpname=$(echo $1-backup.dump);
     dbuser=$(echo $1);
-    dbname=$(echo $1);
+    dbname=$(echo $1 | sed -e "s/-/_/g");
     curl -o $dumpname $(heroku pg:backups public-url --app $app); 
     dropdb -U pguser -h localhost $dbname;
-    createdb -U pguser -h localhost $dbname -O $dbuser;
+    createdb -U pguser -h localhost $dbname;
     pg_restore --clean --no-acl --no-owner -h localhost -U pguser -d $dbname < $dumpname;
 }
+
 
