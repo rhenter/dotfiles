@@ -2,12 +2,8 @@ map <F2> :bp<CR>
 map <F3> :bn<CR>
 map <F7> :syntax on<CR>
 map <F8> :syntax off<CR>
-map <F12> :set mouse=a<CR>
 map <F11> :set mouse=off<CR>
-
-" autocmd BufNewFile,BufRead *.mxml compiler flex
-" autocmd BufNewFile,BufRead *.mxml set filetype=mxml
-" autocmd BufNewFile,BufRead *.as set filetype=actionscript
+map <F12> :set mouse=a<CR>
 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
@@ -78,7 +74,6 @@ set expandtab           "expand tabs to spaces
 set incsearch           "incremental search
 " set mouse=a             "enable mouse usage
 set tags+=$HOME/.vim/tags/python.ctags
-set number
 
 " remove ^M characters from windows files
 map <C-M> mvggVG:s/<C-V><CR>//g<CR>`v
@@ -164,3 +159,4 @@ def EvaluateCurrentRange():
 EOL
 
 map <C-h> :py EvaluateCurrentRange()
+map <C-j> :%!python -m json.tool
