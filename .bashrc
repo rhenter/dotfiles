@@ -121,6 +121,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+PROJECT_PATH="$HOME/workspace/"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
@@ -135,7 +136,7 @@ p() { workon $(workon | sed -n "/^$(echo $1 | sed 's,/,,').*/p" | sort -u | head
 c() { cdproject $*; }
 mkvirt() { mkvirtualenv -p $(which python) -a $(pwd) $*; }
 newtmux() { tmux new-window -t olist:$1 -n $2 -c $(pwd) ; tmux split-window -t $2 -v -p 50 -c $(pwd);}
-update() { git pull ; pip install -r requirements.txt; }
+update() { git pull ; pip install -r requirements/local.txt; }
 shell() { python manage.py shell_plus; }
 runserver() { python manage.py runserver 0.0.0.0:$1; }
 update-data() {
@@ -143,10 +144,8 @@ update-data() {
     dumpname=$(echo $1-backup.dump);
     dbuser=$(echo $1);
     dbname=$(echo $1 | sed -e "s/-/_/g");
-    curl -o $dumpname $(heroku pg:backups public-url --app $app); 
+    curl -o $dumpname $(heroku pg:backups public-url --app $app);
     dropdb -U pguser -h localhost $dbname;
     createdb -U pguser -h localhost $dbname;
     pg_restore --clean --no-acl --no-owner -h localhost -U pguser -d $dbname < $dumpname;
 }
-
-
